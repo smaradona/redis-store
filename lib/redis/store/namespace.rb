@@ -47,7 +47,7 @@ class Redis
       def del(*keys)
         puts "Deleting: keys: #{keys}"
         begin
-          boop
+          raise StandardError.new('error')
         rescue => e
           logger.debug(e.message)
           logger.debug(e.backtrace.join("\n"))
