@@ -1,66 +1,138 @@
-require 'logger'
-
-logger = Logger.new(STDOUT)
-logger.level = Logger::DEBUG
-
 class Redis
   class Store < self
     module Namespace
       FLUSHDB_BATCH_SIZE = 1000
 
       def set(key, val, options = nil)
+        puts "Set: key: #{key}, val: #{val}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         namespace(key) { |k| super(k, val, options) }
       end
 
       def setex(key, ttl, val, options = nil)
+        puts "Setex: key: #{key}, val: #{val}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         namespace(key) { |k| super(k, ttl, val, options) }
       end
 
       def setnx(key, val, options = nil)
+        puts "Setnx: key: #{key}, val: #{val}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         namespace(key) { |k| super(k, val, options) }
       end
 
       def ttl(key, options = nil)
+        puts "ttl: key: #{key}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         namespace(key) { |k| super(k) }
       end
 
       def get(key, options = nil)
+        puts "get: key: #{key}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         namespace(key) { |k| super(k, options) }
       end
 
       def exists(key)
+        puts "exists: key: #{key}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         namespace(key) { |k| super(k) }
       end
 
       def incrby(key, increment)
+        puts "incrby: key: #{key}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         namespace(key) { |k| super(k, increment) }
       end
 
       def decrby(key, increment)
+        puts "decrby: key: #{key}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         namespace(key) { |k| super(k, increment) }
       end
 
       def keys(pattern = "*")
+        puts "keys: pattern: #{pattern}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         namespace(pattern) { |p| super(p).map{|key| strip_namespace(key) } }
       end
 
       def del(*keys)
         puts "Deleting: keys: #{keys}"
         begin
-          raise StandardError.new('error')
+          boop
         rescue => e
-          logger.debug(e.message)
-          logger.debug(e.backtrace.join("\n"))
+          puts e.message
+          puts e.backtrace.join("\n")
         end
 
         super(*keys.map {|key| interpolate(key) }) if keys.any?
       end
 
       def watch(*keys)
+        puts "watch: keys: #{keys}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         super(*keys.map {|key| interpolate(key) }) if keys.any?
       end
 
       def mget(*keys)
+        puts "mget: keys: #{keys}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         options = (keys.pop if keys.last.is_a? Hash) || {}
         if keys.any?
           # Serialization gets extended before Namespace does, so we need to pass options further
@@ -73,7 +145,14 @@ class Redis
       end
 
       def expire(key, ttl)
-         namespace(key) { |k| super(k, ttl) }
+        puts "expire: key: #{key}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
+        namespace(key) { |k| super(k, ttl) }
       end
 
       def to_s
@@ -85,6 +164,13 @@ class Redis
       end
 
       def flushdb
+        puts "flushdb"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
         keys.each_slice(FLUSHDB_BATCH_SIZE) { |key_slice| del(*key_slice) }
       end
 
