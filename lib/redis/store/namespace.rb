@@ -40,6 +40,14 @@ class Redis
       end
 
       def del(*keys)
+        puts "Deleting: keys: #{keys}"
+        begin
+          boop
+        rescue => e
+          puts e.message
+          puts e.backtrace.join("\n")
+        end
+
         super(*keys.map {|key| interpolate(key) }) if keys.any?
       end
 
