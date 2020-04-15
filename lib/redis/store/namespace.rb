@@ -1,3 +1,8 @@
+require 'logger'
+
+logger = Logger.new(STDOUT)
+logger.level = Logger::DEBUG
+
 class Redis
   class Store < self
     module Namespace
@@ -44,8 +49,8 @@ class Redis
         begin
           boop
         rescue => e
-          puts e.message
-          puts e.backtrace.join("\n")
+          logger.debug(e.message)
+          logger.debug(e.backtrace.join("\n"))
         end
 
         super(*keys.map {|key| interpolate(key) }) if keys.any?
