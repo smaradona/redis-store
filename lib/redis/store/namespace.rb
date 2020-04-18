@@ -15,7 +15,7 @@ class Redis
       end
 
       def setex(key, ttl, val, options = nil)
-        puts "Setex: key: #{key}, val: #{val}"
+        puts "Setex: key: #{key}, val: #{val}, ttl: #{ttl}"
         begin
           boop
         rescue => e
@@ -49,6 +49,7 @@ class Redis
 
       def get(key, options = nil)
         puts "get: key: #{key}"
+        puts "value: #{namespace(key) { |k| super(k, options) }}"
         begin
           boop
         rescue => e
